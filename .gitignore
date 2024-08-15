@@ -5,6 +5,7 @@
 
 #public uploads folder
 uploads/
+theme/
 
 # Created by git when using merge tools for conflicts
 *.BACKUP.*
