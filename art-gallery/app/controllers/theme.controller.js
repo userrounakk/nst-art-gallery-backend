@@ -1,3 +1,4 @@
+const Art = require("../../models/art");
 const Theme = require("../../models/theme");
 const deleteFile = require("../utils/delete_file");
 const slugify = require("../utils/slugify");
@@ -28,19 +29,23 @@ const show = async (req, res) => {
         message: "Slug is required",
       });
     }
-    // TODO: send arts with theme.
-    const theme = await Theme.findOne({ slug: slug });
+    const theme = await Theme.findOne({ slug });
+
     if (!theme) {
       return res.status(404).json({
         status: "error",
         message: "Theme not found.",
       });
     }
+    const arts = await Art.find({ theme: theme._id })
+      .populate({ path: "artist", select: "id name" })
+      .exec();
 
     return res.status(200).json({
       status: "success",
       message: "Theme fetched successfully.",
       theme: theme,
+      arts: arts,
     });
   } catch (e) {
     return res.status(500).json({
@@ -176,5 +181,6 @@ const destroy = async (req, res) => {
     res.status(500).json({ status: "error", message: err.message });
   }
 };
+// TODO: Select a random theme for theme of the day
 
 module.exports = { index, show, create, edit, destroy };
