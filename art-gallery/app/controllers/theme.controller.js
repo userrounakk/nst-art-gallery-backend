@@ -7,7 +7,7 @@ const fs = require("fs");
 const index = async (req, res) => {
   try {
     const themes = await Theme.find();
-    return res.status(500).json({
+    return res.status(200).json({
       status: "success",
       message: "Themes Fetched Successfully.",
       themes: themes,
